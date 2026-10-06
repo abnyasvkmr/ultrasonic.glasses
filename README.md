@@ -1,2 +1,2 @@
 # ultrasonic.glasses
-http://localhost:5173/
+https://ultrasonicglasses.vercel.app/
