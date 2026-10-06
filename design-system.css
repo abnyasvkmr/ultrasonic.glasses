@@ -1,0 +1,544 @@
+/* =========================================================================
+   TACTILE INDUSTRIAL DESIGN SYSTEM // ULTRASONIC WEARABLE ARCHITECTURE
+   Inspired by Teenage Engineering, Leica & Dieter Rams High-End Hardware
+   ========================================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Orbitron:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap');
+
+:root {
+  /* Industrial Chassis Color Matrix */
+  --chassis-void: #06070a;
+  --chassis-base: #0b0d12;
+  --chassis-surface: #12151d;
+  --chassis-raised: #181c26;
+  --chassis-panel: #1e2330;
+  --chassis-border: rgba(255, 255, 255, 0.08);
+  --chassis-border-active: rgba(0, 242, 254, 0.45);
+  --chassis-bevel-top: rgba(255, 255, 255, 0.12);
+  --chassis-bevel-bot: rgba(0, 0, 0, 0.7);
+
+  /* Phosphor Illumination Tokens */
+  --sonar-cyan: #00f2fe;
+  --sonar-cyan-dim: rgba(0, 242, 254, 0.15);
+  --caution-amber: #f59e0b;
+  --caution-amber-dim: rgba(245, 158, 11, 0.15);
+  --hazard-red: #ef4444;
+  --hazard-red-dim: rgba(239, 68, 68, 0.18);
+  --pulse-emerald: #10b981;
+  --pulse-emerald-dim: rgba(16, 185, 129, 0.15);
+  --mcu-indigo: #818cf8;
+  --mcu-indigo-dim: rgba(129, 140, 248, 0.15);
+
+  /* Typography Stacks */
+  --font-hero-cyber: 'Orbitron', monospace;
+  --font-hero-syne: 'Syne', sans-serif;
+  --font-hero-grotesk: 'Space Grotesk', sans-serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+/* Reset & Global */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+  background-color: var(--chassis-void);
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--chassis-void);
+  color: #e2e8f0;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  position: relative;
+  user-select: text;
+}
+
+::selection {
+  background: rgba(0, 242, 254, 0.3);
+  color: #ffffff;
+}
+
+/* Tactical Background & Radar Grid Canvas */
+.tactical-canvas-backdrop {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.tactical-grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 24px 24px, 120px 120px, 120px 120px;
+  opacity: 0.7;
+}
+
+.tactical-scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+  opacity: 0.35;
+}
+
+.ambient-glow-orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(140px);
+  pointer-events: none;
+  opacity: 0.12;
+}
+
+/* Corner HUD Technical Calipers */
+.hud-corner {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-color: rgba(0, 242, 254, 0.5);
+  pointer-events: none;
+}
+.hud-corner-tl { top: 12px; left: 12px; border-top: 2px solid; border-left: 2px solid; }
+.hud-corner-tr { top: 12px; right: 12px; border-top: 2px solid; border-right: 2px solid; }
+.hud-corner-bl { bottom: 12px; left: 12px; border-bottom: 2px solid; border-left: 2px solid; }
+.hud-corner-br { bottom: 12px; right: 12px; border-bottom: 2px solid; border-right: 2px solid; }
+
+/* Screws & Machined Hardware Fasteners */
+.hardware-screw {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #2a2f3d;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.8), 0 1px 0 rgba(255, 255, 255, 0.1);
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.hardware-screw::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: #11141a;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+/* Tactile Industrial Panels & Racks */
+.tactile-chassis {
+  background: linear-gradient(180deg, var(--chassis-surface) 0%, var(--chassis-base) 100%);
+  border: 1px solid var(--chassis-border);
+  box-shadow: 
+    inset 0 1px 0 var(--chassis-bevel-top),
+    inset 0 -1px 0 var(--chassis-bevel-bot),
+    0 12px 32px rgba(0, 0, 0, 0.6);
+  border-radius: 16px;
+  position: relative;
+}
+
+.tactile-rack-card {
+  background: linear-gradient(165deg, rgba(24, 28, 38, 0.9) 0%, rgba(14, 17, 24, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.6),
+    0 14px 30px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.tactile-rack-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(0, 242, 254, 0.35);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 18px 40px rgba(0, 0, 0, 0.7),
+    0 0 20px rgba(0, 242, 254, 0.08);
+}
+
+/* Machined CNC Header Faceplate */
+.equipment-header {
+  position: fixed;
+  top: 12px;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  padding: 0 1rem;
+  max-width: 80rem;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.equipment-faceplate {
+  background: rgba(15, 18, 26, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  padding: 0.55rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.8),
+    0 16px 36px rgba(0, 0, 0, 0.7);
+}
+
+/* Mechanical Badges & Stamps */
+.engraved-stamp {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: #141822;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.6);
+  color: #94a3b8;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.engraved-stamp-cyan {
+  background: rgba(0, 242, 254, 0.1);
+  border-color: rgba(0, 242, 254, 0.35);
+  color: var(--sonar-cyan);
+}
+.engraved-stamp-amber {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.35);
+  color: var(--caution-amber);
+}
+.engraved-stamp-emerald {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.35);
+  color: var(--pulse-emerald);
+}
+.engraved-stamp-red {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.45);
+  color: var(--hazard-red);
+}
+
+/* Tactile Push Buttons & Switchers */
+.tactile-button {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 8px 18px;
+  border-radius: 9999px;
+  background: linear-gradient(180deg, #222736 0%, #171b26 100%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #f1f5f9;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.8),
+    0 4px 10px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+}
+.tactile-button:hover {
+  background: linear-gradient(180deg, #2a3144 0%, #1e2332 100%);
+  border-color: rgba(0, 242, 254, 0.5);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 6px 14px rgba(0, 0, 0, 0.6),
+    0 0 12px rgba(0, 242, 254, 0.2);
+}
+.tactile-button:active {
+  transform: translateY(1px);
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.8),
+    0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.tactile-button-primary {
+  background: linear-gradient(180deg, #00f2fe 0%, #0284c7 100%);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #06080e;
+  font-weight: 700;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.6),
+    0 4px 14px rgba(0, 242, 254, 0.35);
+}
+.tactile-button-primary:hover {
+  background: linear-gradient(180deg, #38bdf8 0%, #00f2fe 100%);
+  color: #000000;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 6px 18px rgba(0, 242, 254, 0.5);
+}
+
+/* Physical Mechanical Sound Switch */
+.audio-rocker-toggle {
+  background: #141722;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+  padding: 6px 10px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.7), 0 1px 0 rgba(255, 255, 255, 0.06);
+  transition: all 0.2s ease;
+  color: #94a3b8;
+}
+.audio-rocker-toggle.active {
+  border-color: rgba(0, 242, 254, 0.5);
+  background: rgba(0, 242, 254, 0.12);
+  color: var(--sonar-cyan);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4), 0 0 14px rgba(0, 242, 254, 0.25);
+}
+
+/* Realistic LED Lenses */
+.led-jewel {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  flex-shrink: 0;
+}
+.led-jewel::after {
+  content: '';
+  position: absolute;
+  top: 1.5px;
+  left: 2px;
+  width: 2.5px;
+  height: 2px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.8);
+}
+.led-jewel-cyan {
+  background: #00f2fe;
+  box-shadow: 0 0 10px #00f2fe, 0 0 4px #00f2fe;
+}
+.led-jewel-amber {
+  background: #f59e0b;
+  box-shadow: 0 0 10px #f59e0b, 0 0 4px #f59e0b;
+}
+.led-jewel-emerald {
+  background: #10b981;
+  box-shadow: 0 0 10px #10b981, 0 0 4px #10b981;
+}
+.led-jewel-red {
+  background: #ef4444;
+  box-shadow: 0 0 12px #ef4444, 0 0 5px #ef4444;
+}
+
+/* Oscilloscope CRT Bezel & Screen */
+.crt-oscilloscope-bay {
+  background: #06090e;
+  border: 1px solid rgba(0, 242, 254, 0.25);
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    inset 0 0 30px rgba(0, 242, 254, 0.05),
+    inset 0 2px 4px rgba(0, 0, 0, 0.9),
+    0 10px 25px rgba(0, 0, 0, 0.6);
+}
+
+.crt-graticule-grid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, rgba(0, 242, 254, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 242, 254, 0.08) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+/* Knurled Potentiometer Sliders */
+input[type=range].knurled-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  width: 100%;
+}
+input[type=range].knurled-slider:focus {
+  outline: none;
+}
+input[type=range].knurled-slider::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 4px;
+  background: #141722;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+input[type=range].knurled-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 20px;
+  width: 14px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #d1d5db 0%, #9ca3af 50%, #4b5563 100%);
+  border: 1px solid #ffffff;
+  margin-top: -6px;
+  box-shadow: 
+    inset 0 1px 0 #ffffff,
+    0 3px 8px rgba(0, 0, 0, 0.7);
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.3) 2px,
+    rgba(0, 0, 0, 0.3) 3px
+  );
+}
+
+/* Tactile Chip Button Group */
+.preset-chip-btn {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: #151822;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.preset-chip-btn:hover {
+  background: #1f2433;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+.preset-chip-btn.active-cyan {
+  background: rgba(0, 242, 254, 0.15);
+  border-color: rgba(0, 242, 254, 0.5);
+  color: var(--sonar-cyan);
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.25);
+}
+.preset-chip-btn.active-amber {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.5);
+  color: var(--caution-amber);
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.25);
+}
+.preset-chip-btn.active-red {
+  background: rgba(239, 68, 68, 0.18);
+  border-color: rgba(239, 68, 68, 0.5);
+  color: var(--hazard-red);
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.3);
+}
+
+/* Animations */
+@keyframes radar-sweep {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.96); opacity: 0.4; }
+  50% { transform: scale(1.04); opacity: 0.8; }
+  100% { transform: scale(0.96); opacity: 0.4; }
+}
+
+@keyframes ping {
+  75%, 100% { transform: scale(2); opacity: 0; }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(-15%); animation-timing-function: cubic-bezier(0.8,0,1,1); }
+  50% { transform: none; animation-timing-function: cubic-bezier(0,0,0.2,1); }
+}
+
+@keyframes pulse {
+  50% { opacity: .5; }
+}
+
+.animate-radar-sweep {
+  animation: radar-sweep 8s linear infinite;
+}
+.animate-pulse-ring {
+  animation: pulse-ring 4s ease-in-out infinite;
+}
+.animate-ping {
+  animation: ping 1.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+.animate-bounce {
+  animation: bounce 1s infinite;
+}
+
+/* Modal Dialog */
+.modal-backdrop-blur {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(4, 6, 10, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.modal-chassis {
+  background: linear-gradient(180deg, #131722 0%, #0c0e14 100%);
+  border: 1px solid rgba(0, 242, 254, 0.35);
+  border-radius: 20px;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 25px 60px rgba(0, 0, 0, 0.85);
+  max-width: 56rem;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Scrollbar Customization */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0b0d13;
+}
+::-webkit-scrollbar-thumb {
+  background: #252b3b;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3b445d;
+}

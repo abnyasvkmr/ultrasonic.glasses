@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ultrasonic Glasses with Posture Correction and Caution Detection</title>
+  <meta name="description" content="Next-generation assistive wearable engineering merging dual-transducer 40kHz acoustic echo-location for dynamic hazard mitigation with real-time 6-axis cervical spine telemetry." />
+  <meta property="og:title" content="Ultrasonic Glasses with Posture Correction and Caution Detection" />
+  <meta property="og:description" content="Next-generation assistive wearable engineering merging dual-transducer 40kHz acoustic echo-location for dynamic hazard mitigation with real-time 6-axis cervical spine telemetry." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="./design-system.css" />
+  <style>
+    /* Section Layout Utilities */
+    .section-container {
+      max-width: 80rem;
+      margin: 0 auto;
+      width: 100%;
+      position: relative;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Tactical Background Canvas & Technical Grid Calipers -->
+  <div class="tactical-canvas-backdrop">
+    <div class="ambient-glow-orb" style="top: -10%; left: 50%; transform: translateX(-50%); width: 900px; height: 600px; background: radial-gradient(circle, rgba(0,242,254,0.18) 0%, transparent 70%);"></div>
+    <div class="ambient-glow-orb" style="top: 25%; right: -5%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(129,140,248,0.15) 0%, transparent 70%);"></div>
+    <div class="ambient-glow-orb" style="bottom: 10%; left: -5%; width: 650px; height: 650px; background: radial-gradient(circle, rgba(0,242,254,0.12) 0%, transparent 70%);"></div>
+    <div class="tactical-grid-overlay"></div>
+    <div class="tactical-scanlines"></div>
+
+    <!-- Technical Calipers & Micro Stamps -->
+    <div style="position: absolute; top: 16px; left: 20px; font-family: var(--font-mono); font-size: 10px; color: rgba(0,242,254,0.5); display: flex; align-items: center; gap: 8px;">
+      <span class="hud-corner-tl" style="position: static; display: inline-block;"></span>
+      <span>SYS_CORE // 40.0kHz_ACOUSTIC</span>
+    </div>
+    <div style="position: absolute; top: 16px; right: 20px; font-family: var(--font-mono); font-size: 10px; color: rgba(0,242,254,0.5); display: flex; align-items: center; gap: 8px;">
+      <span>BIOMETRIC_CAL [±0.2°]</span>
+      <span class="hud-corner-tr" style="position: static; display: inline-block;"></span>
+    </div>
+    <div style="position: absolute; bottom: 16px; left: 20px; font-family: var(--font-mono); font-size: 10px; color: #64748b; display: flex; align-items: center; gap: 8px;">
+      <span class="hud-corner-bl" style="position: static; display: inline-block;"></span>
+      <span>ATmega328P // NANO_CORE</span>
+    </div>
+    <div style="position: absolute; bottom: 16px; right: 20px; font-family: var(--font-mono); font-size: 10px; color: #64748b; display: flex; align-items: center; gap: 8px;">
+      <span>STATUS: ACTIVE_TELEMETRY</span>
+      <span class="hud-corner-br" style="position: static; display: inline-block;"></span>
+    </div>
+
+    <!-- Azimuth Graticule Bars -->
+    <div style="display: none; position: absolute; top: 50%; left: 16px; transform: translateY(-50%); flex-direction: column; gap: 8px; font-family: var(--font-mono); font-size: 9px; color: #475569;" class="hud-azimuth-left">
+      <span>+00</span><div style="width: 8px; height: 1px; background: rgba(0,242,254,0.3);"></div>
+      <span>+45</span><div style="width: 8px; height: 1px; background: rgba(0,242,254,0.3);"></div>
+      <span>+90</span><div style="width: 12px; height: 2px; background: rgba(0,242,254,0.5);"></div>
+      <span>-45</span><div style="width: 8px; height: 1px; background: rgba(0,242,254,0.3);"></div>
+      <span>-90</span>
+    </div>
+    <div style="display: none; position: absolute; top: 50%; right: 16px; transform: translateY(-50%); flex-direction: column; gap: 8px; font-family: var(--font-mono); font-size: 9px; color: #475569; align-items: flex-end;" class="hud-azimuth-right">
+      <span>RADAR</span><div style="width: 8px; height: 1px; background: rgba(0,242,254,0.3);"></div>
+      <span>AZIMUTH</span><div style="width: 8px; height: 1px; background: rgba(0,242,254,0.3);"></div>
+      <span style="color: rgba(0,242,254,0.7); font-weight: 600;">TRIG_10μs</span><div style="width: 12px; height: 2px; background: rgba(0,242,254,0.5);"></div>
+      <span>ECHO_BUS</span>
+    </div>
+  </div>
+
+  <!-- FIXED MACHINED EQUIPMENT HEADER -->
+  <header class="equipment-header">
+    <div class="equipment-faceplate">
+      <!-- Brand & Rev -->
+      <a href="#hero" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit;">
+        <div style="width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #1f2536 0%, #11141c 100%); border: 1px solid rgba(0,242,254,0.4); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 12px rgba(0,242,254,0.25);">
+          <span style="font-family: var(--font-hero-cyber); font-size: 18px; font-weight: 800; color: var(--sonar-cyan);">μ</span>
+        </div>
+        <div>
+          <div style="font-family: var(--font-hero-cyber); font-weight: 700; font-size: 11px; letter-spacing: 0.08em; color: #ffffff; display: flex; align-items: center; gap: 8px;">
+            <span>ULTRASONIC GLASSES</span>
+            <span class="engraved-stamp engraved-stamp-cyan">REV 2.4</span>
+          </div>
+          <div style="font-size: 9px; text-transform: uppercase; letter-spacing: 0.12em; color: #94a3b8; font-family: var(--font-mono); font-weight: 500;">Posture Correction & Caution Detection</div>
+        </div>
+      </a>
+
+      <!-- Navigation links -->
+      <nav style="display: none; align-items: center; gap: 4px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); border-radius: 9999px; padding: 3px 8px;" class="desktop-nav">
+        <a href="#hero" class="nav-link" style="padding: 4px 12px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--font-mono); color: #cbd5e1; text-decoration: none; border-radius: 9999px; transition: color 0.15s;">Prototype</a>
+        <a href="#capabilities" class="nav-link" style="padding: 4px 12px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--font-mono); color: #cbd5e1; text-decoration: none; border-radius: 9999px; transition: color 0.15s;">Capabilities</a>
+        <a href="#posture-flexion" class="nav-link" style="padding: 4px 12px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--font-mono); color: var(--caution-amber); text-decoration: none; border-radius: 9999px; display: inline-flex; align-items: center; gap: 5px;">
+          <span class="led-jewel led-jewel-amber animate-pulse"></span>
+          <span>Neck Flexion Sim</span>
+        </a>
+        <a href="#telemetry" class="nav-link" style="padding: 4px 12px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--font-mono); color: #cbd5e1; text-decoration: none; border-radius: 9999px; transition: color 0.15s;">Telemetry Lab</a>
+        <a href="#specs" class="nav-link" style="padding: 4px 12px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--font-mono); color: #cbd5e1; text-decoration: none; border-radius: 9999px; transition: color 0.15s;">Pinouts</a>
+      </nav>
+
+      <!-- Action items -->
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <!-- Audio Synth Toggle -->
+        <button id="toggle-sound-btn" class="audio-rocker-toggle" title="Acoustic Sound Muted">
+          <svg id="sound-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
+          </svg>
+        </button>
+
+        <!-- Sonar Status Pill -->
+        <div style="display: none; align-items: center; gap: 8px; padding: 4px 10px; border-radius: 9999px; background: rgba(0,242,254,0.08); border: 1px solid rgba(0,242,254,0.3);" class="status-indicator-pill">
+          <span class="led-jewel led-jewel-cyan animate-ping"></span>
+          <div style="display: flex; flex-direction: column; font-family: var(--font-mono); line-height: 1;">
+            <span style="font-size: 9px; font-weight: 700; text-transform: uppercase; color: var(--sonar-cyan); letter-spacing: 0.06em;">SONAR ACTIVE // 40kHz</span>
+            <span style="font-size: 8px; color: rgba(0,242,254,0.7); margin-top: 2px;">CERVICAL IMU: LOCKED</span>
+          </div>
+        </div>
+
+        <!-- Schematics Button -->
+        <button class="tactile-button open-schematics-btn" style="padding: 6px 14px; font-size: 10px;" title="Inspect Pinout Schematics">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          <span>SCHEMATICS</span>
+        </button>
+
+        <!-- Telemetry CTA Link -->
+        <a href="#telemetry" class="tactile-button tactile-button-primary" style="padding: 6px 14px; font-size: 10px;">
+          <span>Telemetry HUD</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       SECTION 1: HERO & 3D HARDWARE EXHIBITION BAY
+       ========================================================================= -->
+  <section id="hero" style="min-height: 100vh; width: 100%; padding-top: 7rem; padding-bottom: 3.5rem; padding-left: 1.5rem; padding-right: 1.5rem; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden;">
+    
+    <!-- Background Loop Video -->
+    <video id="heroVideo" autoplay loop muted playsinline src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260619_191346_9d19d66e-86a4-47f7-8dc6-712c1788c3b2.mp4" style="position: absolute; left: 50%; top: 0; transform: translateX(-50%); width: 120%; height: 120%; object-fit: cover; object-position: top; z-index: 0; pointer-events: none; opacity: 0.15; mix-blend-mode: screen;"></video>
+
+    <div class="section-container" style="flex: 1; display: flex; flex-direction: column; items: center; justify-content: space-between; text-align: center;">
+      
+      <!-- Top Title Group -->
+      <div style="max-width: 68rem; margin: 0 auto; width: 100%;">
+        
+        <!-- Header Capsule Badge -->
+        <div style="display: inline-flex; align-items: center; gap: 10px; padding: 6px 16px; border-radius: 9999px; background: rgba(18,22,31,0.85); border: 1px solid rgba(0,242,254,0.35); box-shadow: 0 4px 16px rgba(0,0,0,0.5);">
+          <span class="led-jewel led-jewel-cyan animate-pulse"></span>
+          <span style="font-size: 11px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.12em; color: var(--sonar-cyan); font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+            <span>Bio-Telemetry & Sonar HUD</span>
+          </span>
+          <span style="color: #475569; font-family: var(--font-mono);">|</span>
+          <span style="font-size: 11px; font-family: var(--font-mono); letter-spacing: 0.06em; color: #cbd5e1;">HC-SR04 Transceiver 40kHz + 6-DOF IMU</span>
+        </div>
+
+        <!-- H1 Title -->
+        <div style="margin-top: 1.25rem;">
+          <h1 id="hero-title" style="font-family: var(--font-hero-cyber); font-weight: 800; font-size: clamp(2.4rem, 5.5vw, 4.5rem); line-height: 1.05; text-transform: uppercase; letter-spacing: 0.04em; color: #ffffff; text-shadow: 0 2px 20px rgba(0,242,254,0.35);">
+            Ultrasonic Glasses
+          </h1>
+
+          <!-- Feature Sub-badges -->
+          <div style="margin-top: 0.85rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em;">
+            <div style="background: rgba(0,242,254,0.12); border: 1px solid rgba(0,242,254,0.45); border-radius: 9999px; padding: 4px 14px; color: var(--sonar-cyan); display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 0 14px rgba(0,242,254,0.2);">
+              <span class="led-jewel led-jewel-cyan animate-ping"></span>
+              <span>POSTURE CORRECTION</span>
+            </div>
+            <span style="color: var(--sonar-cyan); font-weight: bold;">&</span>
+            <div style="background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.45); border-radius: 9999px; padding: 4px 14px; color: var(--caution-amber); display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 0 14px rgba(245,158,11,0.2);">
+              <span class="led-jewel led-jewel-amber animate-pulse"></span>
+              <span>CAUTION DETECTION</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Paragraph Description -->
+        <p style="margin-top: 1.1rem; font-size: clamp(0.9rem, 1.2vw, 1.05rem); color: #cbd5e1; max-width: 44rem; margin-left: auto; margin-right: auto; font-weight: 300; line-height: 1.65;">
+          Next-generation assistive wearable engineering. Dual-transducer 40kHz acoustic echo-location prevents blind-spot collisions, while continuous 6-axis cervical spine telemetry trains upright ergonomic alignment.
+        </p>
+
+        <!-- Font Vibe Switcher -->
+        <div style="margin-top: 1rem; display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 10px; color: #94a3b8;">
+          <span style="display: inline-flex; align-items: center; gap: 5px; color: rgba(0,242,254,0.8);">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+            <span>FONT VIBE:</span>
+          </span>
+          <div style="display: flex; background: #11141c; border-radius: 8px; padding: 2px; border: 1px solid rgba(255,255,255,0.1);">
+            <button class="preset-chip-btn font-vibe-btn active-cyan" data-vibe="cyber" style="font-family: var(--font-hero-cyber);">ORBITRON</button>
+            <button class="preset-chip-btn font-vibe-btn" data-vibe="syne" style="font-family: var(--font-hero-syne);">SYNE NEO</button>
+            <button class="preset-chip-btn font-vibe-btn" data-vibe="grotesk" style="font-family: var(--font-hero-grotesk);">GROTESK</button>
+          </div>
+        </div>
+
+        <!-- CTAs -->
+        <div style="margin-top: 1.4rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 14px;">
+          <a href="#telemetry" class="tactile-button tactile-button-primary" style="padding: 12px 28px; font-size: 11px;">
+            <span>Explore Laboratory Specs</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+          </a>
+          <button onclick="document.getElementById('prototype-container').scrollIntoView({behavior: 'smooth'})" class="tactile-button" style="padding: 12px 24px; font-size: 11px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="color: var(--sonar-cyan);"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span>Live 3D Hardware Telemetry</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 3D Hardware Exhibition Bay -->
+      <div id="prototype-container" style="position: relative; width: 100%; max-width: 72rem; height: 500px; margin: 1.5rem auto; display: flex; align-items: center; justify-content: center;">
+        
+        <!-- Radar Circles & Acoustic Rings -->
+        <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none;">
+          <div style="width: 580px; height: 580px; border-radius: 50%; border: 1px dashed rgba(0,242,254,0.15);" class="animate-radar-sweep"></div>
+          <div style="position: absolute; width: 440px; height: 440px; border-radius: 50%; border: 1px solid rgba(0,242,254,0.2);" class="animate-pulse-ring"></div>
+          <div style="position: absolute; width: 300px; height: 300px; border-radius: 50%; border: 1px solid rgba(0,242,254,0.25);"></div>
+          
+          <!-- Azimuth Degree Marks -->
+          <div style="position: absolute; width: 540px; display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 9px; color: rgba(0,242,254,0.4); text-transform: uppercase; letter-spacing: 0.1em; padding: 0 10px; user-select: none;">
+            <span>000° ECHO-RADAR</span>
+            <span>090° IMU-CAL</span>
+            <span>180° ATMEGA-BUS</span>
+            <span>270° LI-PO CORE</span>
+          </div>
+        </div>
+
+        <!-- Callout Card Top-Left: HC-SR04 -->
+        <div class="tactile-rack-card" style="position: absolute; left: 1rem; top: 1.5rem; z-index: 20; padding: 1rem; text-align: left; max-width: 270px; display: none;" id="callout-sonar">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+            <div style="display: flex; align-items: center; gap: 7px;">
+              <span class="led-jewel led-jewel-cyan animate-ping"></span>
+              <span style="font-size: 10px; text-transform: uppercase; font-family: var(--font-mono); letter-spacing: 0.08em; color: var(--sonar-cyan); font-weight: 700;">Front Transceiver</span>
+            </div>
+            <span class="engraved-stamp engraved-stamp-cyan">40 kHz</span>
+          </div>
+          <div style="font-size: 13px; font-weight: 600; color: #ffffff; font-family: var(--font-hero-grotesk);">HC-SR04 Dual Sonar Transducers</div>
+          <div style="font-size: 11px; color: #94a3b8; font-weight: 300; margin-top: 6px; line-height: 1.5;">2cm to 400cm acoustic caution envelope with 15° cone emission and millisecond obstacle ping response.</div>
+          <div style="margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(0,242,254,0.2); display: flex; align-items: center; justify-content: space-between; font-size: 10px; font-family: var(--font-mono); color: rgba(0,242,254,0.85);">
+            <span>Cone: ±15° Spread</span>
+            <span style="color: var(--pulse-emerald); font-weight: 600;">PULSE SYNCED</span>
+          </div>
+        </div>
+
+        <!-- Callout Card Bottom-Left: Cervical IMU -->
+        <div class="tactile-rack-card" style="position: absolute; left: 1rem; bottom: 1.5rem; z-index: 20; padding: 1rem; text-align: left; max-width: 260px; display: none;" id="callout-imu">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+            <div style="display: flex; align-items: center; gap: 7px;">
+              <span class="led-jewel led-jewel-amber"></span>
+              <span style="font-size: 10px; text-transform: uppercase; font-family: var(--font-mono); letter-spacing: 0.08em; color: var(--caution-amber); font-weight: 700;">Spine Telemetry</span>
+            </div>
+            <span class="engraved-stamp engraved-stamp-amber">±0.2° ACC</span>
+          </div>
+          <div style="font-size: 13px; font-weight: 600; color: #ffffff; font-family: var(--font-hero-grotesk);">6-DOF Cervical IMU Tracking</div>
+          <div style="font-size: 11px; color: #94a3b8; font-weight: 300; margin-top: 6px; line-height: 1.5;">Real-time forward head flexion & tech-neck deviation monitoring triggering gentle temple haptic cues.</div>
+          <div style="margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(245,158,11,0.2); display: flex; align-items: center; justify-content: space-between; font-size: 10px; font-family: var(--font-mono); color: rgba(245,158,11,0.85);">
+            <span id="hero-pitch-metric">Pitch: 8.4° Neutral</span>
+            <span style="color: var(--sonar-cyan); font-weight: 600;">CALIBRATED</span>
+          </div>
+        </div>
+
+        <!-- Callout Card Top-Right: ATmega328P Core -->
+        <div class="tactile-rack-card" style="position: absolute; right: 1rem; top: 1.5rem; z-index: 20; padding: 1rem; text-align: right; max-width: 270px; display: none;" id="callout-mcu">
+          <div style="display: flex; align-items: center; justify-content: flex-end; gap: 7px; margin-bottom: 6px;">
+            <span class="engraved-stamp" style="color: var(--mcu-indigo);">16 MHz</span>
+            <span style="font-size: 10px; text-transform: uppercase; font-family: var(--font-mono); letter-spacing: 0.08em; color: var(--mcu-indigo); font-weight: 700;">Compute & Power</span>
+            <span class="led-jewel" style="background: var(--mcu-indigo); box-shadow: 0 0 8px var(--mcu-indigo);"></span>
+          </div>
+          <div style="font-size: 13px; font-weight: 600; color: #ffffff; font-family: var(--font-hero-grotesk);">Arduino Nano ATmega328P Core</div>
+          <div style="font-size: 11px; color: #94a3b8; font-weight: 300; margin-top: 6px; line-height: 1.5;">Ergonomic side-temple perfboard mount with miniature wiring harnesses, battery regulation, and silent tactile motor drive.</div>
+          <div style="margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(129,140,248,0.2); display: flex; align-items: center; justify-content: space-between; font-size: 10px; font-family: var(--font-mono); color: rgba(129,140,248,0.85);">
+            <span style="color: var(--pulse-emerald); font-weight: 600;">3.7V LiPo 98%</span>
+            <span>GPIO Echo Bus</span>
+          </div>
+        </div>
+
+        <!-- 3D Canvas Mount Point -->
+        <div id="threejs-canvas-wrapper" style="width: 100%; height: 100%; position: relative; cursor: grab;" class="active:cursor-grabbing"></div>
+
+        <!-- Autorotate Button & Controls -->
+        <div style="position: absolute; top: 12px; right: 12px; z-index: 30; display: flex; align-items: center; gap: 8px;">
+          <button id="toggle-autorotate-btn" class="preset-chip-btn active-cyan" title="Toggle Auto Rotation">AUTOROTATE: ON</button>
+        </div>
+
+        <!-- 3D Hotspot Buttons -->
+        <div style="position: absolute; bottom: 12px; left: 12px; z-index: 30; display: flex; align-items: center; gap: 6px;">
+          <button class="preset-chip-btn hotspot-btn" data-spot="sonar">[HC-SR04 SONAR]</button>
+          <button class="preset-chip-btn hotspot-btn" data-spot="mcu">[ATMEGA328P]</button>
+          <button class="preset-chip-btn hotspot-btn" data-spot="imu">[6-DOF IMU]</button>
+        </div>
+
+        <!-- Hotspot Details Modal/Card -->
+        <div id="hotspot-popup-card" class="tactile-rack-card" style="position: absolute; bottom: 44px; left: 12px; z-index: 40; padding: 12px; max-width: 280px; text-align: left; display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <span id="hotspot-popup-title" style="font-size: 10px; font-family: var(--font-mono); font-weight: 700; color: var(--sonar-cyan); text-transform: uppercase;"></span>
+            <button id="close-hotspot-btn" style="background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 12px; font-family: var(--font-mono);">✕</button>
+          </div>
+          <p id="hotspot-popup-desc" style="font-size: 11px; color: #cbd5e1; line-height: 1.5; font-weight: 300;"></p>
+        </div>
+
+        <!-- Drag Rotate Instruction Badge -->
+        <div style="position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); z-index: 20; pointer-events: none;">
+          <div style="display: inline-flex; align-items: center; gap: 8px; padding: 5px 14px; border-radius: 9999px; background: rgba(18,22,31,0.85); border: 1px solid rgba(0,242,254,0.3); font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: #cbd5e1; box-shadow: 0 4px 14px rgba(0,0,0,0.6);">
+            <span class="led-jewel led-jewel-cyan animate-pulse"></span>
+            <span>DRAG TO ROTATE PHYSICAL ARDUINO & SONAR PROTOTYPE</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 Metrics Summary Cards -->
+      <div style="width: 100%; max-width: 68rem; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.08);">
+        
+        <!-- Metric Card 1 -->
+        <div class="tactile-rack-card" style="padding: 1rem 1.25rem; display: flex; align-items: center; gap: 14px; text-align: left;">
+          <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(0,242,254,0.1); border: 1px solid rgba(0,242,254,0.3); display: flex; align-items: center; justify-content: center; color: var(--sonar-cyan); flex-shrink: 0;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+          <div>
+            <div style="font-family: var(--font-hero-grotesk); font-size: 26px; font-weight: 700; color: #ffffff; line-height: 1; display: flex; align-items: baseline; gap: 4px;">
+              <span>12</span>
+              <span style="font-size: 13px; font-family: var(--font-mono); color: var(--sonar-cyan); font-weight: 400;">ms</span>
+            </div>
+            <div style="font-size: 12px; color: #cbd5e1; font-weight: 300; margin-top: 4px;">Dual Transceiver Ping Latency</div>
+          </div>
+        </div>
+
+        <!-- Metric Card 2 -->
+        <div class="tactile-rack-card" style="padding: 1rem 1.25rem; display: flex; align-items: center; gap: 14px; text-align: left;">
+          <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); display: flex; align-items: center; justify-content: center; color: var(--caution-amber); flex-shrink: 0;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div>
+            <div style="font-family: var(--font-hero-grotesk); font-size: 26px; font-weight: 700; color: #ffffff; line-height: 1; display: flex; align-items: baseline; gap: 4px;">
+              <span>2cm – 400</span>
+              <span style="font-size: 13px; font-family: var(--font-mono); color: var(--caution-amber); font-weight: 400;">cm</span>
+            </div>
+            <div style="font-size: 12px; color: #cbd5e1; font-weight: 300; margin-top: 4px;">HC-SR04 Caution Detection Envelope</div>
+          </div>
+        </div>
+
+        <!-- Metric Card 3 -->
+        <div class="tactile-rack-card" style="padding: 1rem 1.25rem; display: flex; align-items: center; gap: 14px; text-align: left;">
+          <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); display: flex; align-items: center; justify-content: center; color: var(--pulse-emerald); flex-shrink: 0;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div>
+            <div style="font-family: var(--font-hero-grotesk); font-size: 26px; font-weight: 700; color: #ffffff; line-height: 1; display: flex; align-items: baseline; gap: 4px;">
+              <span>±0.2°</span>
+              <span style="font-size: 13px; font-family: var(--font-mono); color: var(--pulse-emerald); font-weight: 400;">Sub-Degree</span>
+            </div>
+            <div style="font-size: 12px; color: #cbd5e1; font-weight: 300; margin-top: 4px;">Spinal & Cervical Angle Resolution</div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       SECTION 2: CAPABILITIES GRID
+       ========================================================================= -->
+  <section id="capabilities" style="min-height: 100vh; width: 100%; position: relative; overflow: hidden; padding: 6rem 1.5rem 4rem 1.5rem; border-top: 1px solid rgba(0,242,254,0.2);">
+    
+    <!-- Background Loop Video -->
+    <video id="capabilitiesVideo" autoplay loop muted playsinline src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260622_093722_ccfc7ebf-182f-419f-8a62-2dc02db7dd9d.mp4" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; pointer-events: none; opacity: 0.12; mix-blend-mode: screen;"></video>
+
+    <div class="section-container">
+      
+      <!-- Section Header -->
+      <div style="max-width: 48rem;">
+        <div style="font-size: 11px; text-transform: uppercase; font-family: var(--font-mono); letter-spacing: 0.12em; color: var(--sonar-cyan); font-weight: 600; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 10px;">
+          <span style="height: 1px; width: 32px; background: var(--sonar-cyan);"></span>
+          <span>// Integrated System Capabilities</span>
+        </div>
+        <h2 style="font-family: var(--font-hero-syne); font-weight: 800; font-size: clamp(2.4rem, 5.5vw, 4.2rem); line-height: 1.05; letter-spacing: -0.02em; color: #ffffff;">
+          Acoustic Sight.<br>Bio-Harmonic Posture.
+        </h2>
+        <p style="margin-top: 1rem; font-size: 1rem; color: #cbd5e1; font-weight: 300; max-width: 38rem; line-height: 1.6;">
+          Engineered for assistive mobility, deep screen-work protection, and dynamic situational caution. Built with accessible, production-grade microcontrollers and rapid-response ultrasound telemetry.
+        </p>
+      </div>
+
+      <!-- 3 High-End Hardware Rack Cards -->
+      <div style="margin-top: 3.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.75rem;">
+        
+        <!-- Capabilities Card 1: Echo Radar -->
+        <div class="tactile-rack-card" style="padding: 2rem; min-height: 420px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+              <div style="width: 52px; height: 52px; border-radius: 14px; background: rgba(0,242,254,0.1); border: 1px solid rgba(0,242,254,0.35); display: flex; align-items: center; justify-content: center; color: var(--sonar-cyan);">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><path d="M12 6a6 6 0 1 0 6 6 6 6 0 0 0-6-6zm0 10a4 4 0 1 1 4-4 4 4 0 0 1-4 4z"/></svg>
+              </div>
+              <div style="display: flex; flex-wrap: gap: 6px; justify-content: flex-end; gap: 6px;">
+                <span class="engraved-stamp engraved-stamp-cyan">HC-SR04 Module</span>
+                <span class="engraved-stamp">40 kHz Sonar</span>
+              </div>
+            </div>
+
+            <div style="margin-top: 2rem;">
+              <h3 style="font-family: var(--font-hero-syne); font-weight: 700; font-size: 24px; color: #ffffff; letter-spacing: -0.02em;">Caution Echo Radar</h3>
+              <p style="margin-top: 0.85rem; font-size: 13.5px; color: #cbd5e1; font-weight: 300; line-height: 1.6;">
+                Dual transceiver transducers mounted directly above the glasses bridge emit acoustic wave bursts that map approaching obstacles, low-hanging hazards, and blind-spot intrusions within 2cm to 400cm with instant tactile haptic feedback.
+              </p>
+            </div>
+          </div>
+
+          <div style="padding-top: 1.25rem; border-top: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: space-between; font-size: 12px; font-family: var(--font-mono); color: #cbd5e1;">
+            <span style="color: var(--sonar-cyan); display: flex; align-items: center; gap: 8px;">
+              <span class="led-jewel led-jewel-cyan animate-ping"></span>
+              0.012s Latency
+            </span>
+            <span style="color: #94a3b8;">Zero Optical Glare</span>
+          </div>
+        </div>
+
+        <!-- Capabilities Card 2: Posture Bio-Feedback -->
+        <div class="tactile-rack-card" style="padding: 2rem; min-height: 420px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+              <div style="width: 52px; height: 52px; border-radius: 14px; background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.35); display: flex; align-items: center; justify-content: center; color: var(--caution-amber);">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              </div>
+              <div style="display: flex; flex-wrap: gap: 6px; justify-content: flex-end; gap: 6px;">
+                <span class="engraved-stamp engraved-stamp-amber">6-DOF IMU</span>
+                <span class="engraved-stamp">Cervical Sync</span>
+              </div>
+            </div>
+
+            <div style="margin-top: 2rem;">
+              <h3 style="font-family: var(--font-hero-syne); font-weight: 700; font-size: 24px; color: #ffffff; letter-spacing: -0.02em;">Posture Bio-Feedback</h3>
+              <p style="margin-top: 0.85rem; font-size: 13.5px; color: #cbd5e1; font-weight: 300; line-height: 1.6;">
+                Embedded micro-gyroscopic accelerators continuously evaluate head flexion, forward neck tilt ("tech-neck"), and lateral slouching. Side-temple vibration pulses silently notify the user when deviation exceeds safe cervical thresholds.
+              </p>
+            </div>
+          </div>
+
+          <div style="padding-top: 1.25rem; border-top: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: space-between; font-size: 12px; font-family: var(--font-mono); color: #cbd5e1;">
+            <span style="color: var(--caution-amber);">±0.2° Angle Resolution</span>
+            <span style="color: #94a3b8;">Continuous Auto-Cal</span>
+          </div>
+        </div>
+
+        <!-- Capabilities Card 3: Temple-Mounted Core -->
+        <div class="tactile-rack-card" style="padding: 2rem; min-height: 420px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+              <div style="width: 52px; height: 52px; border-radius: 14px; background: rgba(129,140,248,0.1); border: 1px solid rgba(129,140,248,0.35); display: flex; align-items: center; justify-content: center; color: var(--mcu-indigo);">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+              </div>
+              <div style="display: flex; flex-wrap: gap: 6px; justify-content: flex-end; gap: 6px;">
+                <span class="engraved-stamp" style="color: var(--mcu-indigo); border-color: rgba(129,140,248,0.4);">ATmega328P</span>
+                <span class="engraved-stamp">LiPo Core</span>
+              </div>
+            </div>
+
+            <div style="margin-top: 2rem;">
+              <h3 style="font-family: var(--font-hero-syne); font-weight: 700; font-size: 24px; color: #ffffff; letter-spacing: -0.02em;">Temple-Mounted Core</h3>
+              <p style="margin-top: 0.85rem; font-size: 13.5px; color: #cbd5e1; font-weight: 300; line-height: 1.6;">
+                Integrated onto an ergonomic side perfboard mount with miniature wiring harnesses, battery regulation circuitry, and silent tactile motors for unencumbered all-day wearability across indoor and outdoor environments.
+              </p>
+            </div>
+          </div>
+
+          <div style="padding-top: 1.25rem; border-top: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: space-between; font-size: 12px; font-family: var(--font-mono); color: #cbd5e1;">
+            <span style="color: var(--mcu-indigo);">16 MHz Real-Time Processing</span>
+            <span style="color: #94a3b8;">Low-Power LiPo Core</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       SECTION 3: BIOMETRIC CERVICAL SPINE SIMULATION BAY
+       ========================================================================= -->
+  <section id="posture-flexion" style="width: 100%; position: relative; padding: 4rem 1.5rem; background: rgba(9,11,16,0.95); border-top: 1px solid rgba(255,255,255,0.08);">
+    <div class="section-container">
+      
+      <div class="tactile-chassis" style="padding: 2rem; overflow: hidden; position: relative;">
+        
+        <!-- Header row of flexion simulator -->
+        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1.25rem; position: relative; z-index: 10;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+              <span class="led-jewel led-jewel-amber animate-pulse"></span>
+              <span style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--sonar-cyan); font-weight: 700;">// Biometric Cervical Spine Simulation</span>
+            </div>
+            <h4 style="font-family: var(--font-hero-syne); font-weight: 700; font-size: clamp(1.4rem, 2.8vw, 2rem); color: #ffffff; letter-spacing: -0.01em; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+              <span>Ultrasonic Glasses Wearer Flexion Test</span>
+              <span id="flexion-limit-exceeded-pill" class="engraved-stamp engraved-stamp-red animate-pulse" style="display: none; padding: 4px 10px; font-size: 10px;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <span>LIMIT EXCEEDED</span>
+              </span>
+            </h4>
+          </div>
+
+          <!-- Controls: Pause Motion, Reset -->
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px;">
+            <button id="toggle-motion-btn" class="preset-chip-btn active-cyan" style="padding: 7px 16px; font-size: 11px; display: inline-flex; align-items: center; gap: 6px;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+              <span id="motion-btn-text">PAUSE MOTION</span>
+            </button>
+            <button id="reset-flexion-btn" class="preset-chip-btn" style="padding: 7px 16px; font-size: 11px; display: inline-flex; align-items: center; gap: 6px;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 2v6h6"/><path d="M21 12A9 9 0 0 0 6 5.3L3 8"/></svg>
+              <span>RESET (8°)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 2 Column Body: SVG Spine Viewport on Left, Gauge & Controls on Right -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; align-items: center;">
+          
+          <!-- Left: SVG Kinematic Profile Bay -->
+          <div class="crt-oscilloscope-bay" style="padding: 1.25rem; min-height: 380px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div class="crt-graticule-grid" style="opacity: 0.25;"></div>
+
+            <!-- Top bar -->
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 10px; font-family: var(--font-mono); position: relative; z-index: 10; color: #94a3b8;">
+              <span style="display: flex; align-items: center; gap: 6px;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--sonar-cyan);"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <span>KINEMATIC PROFILE: SAGITTAL PLANE</span>
+              </span>
+              <span style="color: var(--pulse-emerald); font-weight: 700;">LIMIT: 25.0° // CURRENT: <span class="cervical-angle-text">8.4°</span></span>
+            </div>
+
+            <!-- SVG Kinematic Canvas -->
+            <div style="position: relative; width: 100%; height: 290px; display: flex; align-items: center; justify-content: center; z-index: 10;">
+              <svg style="width: 100%; height: 100%; max-width: 460px; overflow: visible;" viewBox="0 0 460 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- 0° Neutral Axis -->
+                <line x1="220" y1="40" x2="220" y2="280" stroke="#334155" stroke-width="1" stroke-dasharray="4 4" />
+                <text x="225" y="55" fill="#64748b" font-size="9" font-family="monospace">0° NEUTRAL AXIS</text>
+
+                <!-- 25° Alert Threshold Axis -->
+                <line x1="220" y1="220" x2="291.8" y2="65.9" stroke="#ef4444" stroke-width="1.2" stroke-dasharray="2 3" stroke-opacity="0.6" />
+                <text x="298" y="70" fill="#ef4444" font-size="9" font-family="monospace" font-weight="bold">25° ALERT THRESHOLD</text>
+
+                <!-- Arc -->
+                <path id="svg-angle-arc-path" d="M 220,130 A 90 90 0 0 1 233 131" stroke="#00f2fe" stroke-width="2.5" fill="none" />
+
+                <!-- Torso Static -->
+                <g id="torso-static">
+                  <path d="M 160,320 C 160,265 175,230 205,215 C 215,210 225,212 235,218 C 265,235 285,270 295,320 Z" fill="#0b1329" stroke="#1e293b" stroke-width="2" />
+                  <circle cx="205" cy="225" r="4" fill="#334155" />
+                  <circle cx="198" cy="245" r="4.5" fill="#334155" />
+                  <circle cx="194" cy="270" r="5" fill="#334155" />
+                  <circle cx="192" cy="298" r="5.5" fill="#334155" />
+                  <text x="140" y="248" fill="#475569" font-size="8" font-family="monospace">C7 PIVOT</text>
+                </g>
+
+                <!-- Cervical Vertebrae Spline Curve -->
+                <path id="svg-cervical-curve" d="M 205,215 Q 210,170 215,125" stroke="#38bdf8" stroke-width="3" fill="none" style="transition: all 0.08s;" />
+                <g id="svg-vertebrae-dots"></g>
+
+                <!-- Skull, Wearable Glasses, and Ultrasound Waves -->
+                <g id="svg-skull-rotation-group" transform="rotate(9.24 205 215)" style="transition: transform 0.08s linear;">
+                  <!-- Head contour -->
+                  <path d="M 195,130 C 190,110 195,85 210,65 C 230,42 270,40 288,65 C 298,80 300,105 292,122 C 286,134 272,142 260,145 C 245,150 220,152 205,140 Z" fill="#0e172a" stroke="#334155" stroke-width="2" />
+                  <ellipse cx="236" cy="105" rx="8" ry="12" fill="#1e293b" stroke="#334155" stroke-width="1.5" />
+                  <path d="M 276,96 Q 284,92 290,96" stroke="#94a3b8" stroke-width="1.5" fill="none" />
+                  <circle cx="282" cy="98" r="2.5" fill="#38bdf8" />
+                  <path d="M 282,82 L 292,98 L 305,108 L 294,112 L 290,122" stroke="#334155" stroke-width="1.5" fill="none" />
+
+                  <!-- Wearable Glasses on Face -->
+                  <g id="wearable-glasses">
+                    <line x1="234" y1="102" x2="284" y2="97" stroke="#00f2fe" stroke-width="3.5" stroke-linecap="round" />
+                    <rect x="242" y="93" width="18" height="10" rx="2" fill="#0284c7" stroke="#ffffff" stroke-width="1" />
+                    <circle cx="251" cy="98" r="2" fill="#38bdf8" />
+                    <path d="M 282,90 L 296,88 C 300,88 303,91 303,96 L 301,106 C 300,110 296,112 292,112 L 282,110 Z" fill="rgba(0, 242, 254, 0.18)" stroke="#00f2fe" stroke-width="2.5" />
+                    
+                    <!-- Ultrasonic Transducers and Sound Waves -->
+                    <g id="ultrasonic-transducers" transform="translate(296, 92)">
+                      <rect x="0" y="-4" width="8" height="18" rx="2" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5" />
+                      <circle cx="4" cy="0" r="3.5" fill="#38bdf8" stroke="#ffffff" stroke-width="1" />
+                      <circle cx="4" cy="10" r="3.5" fill="#0284c7" stroke="#ffffff" stroke-width="1" />
+                      <g style="opacity: 0.9;">
+                        <path d="M 12,-4 A 18 18 0 0 1 12,16" stroke="#00f2fe" stroke-width="2" stroke-linecap="round" fill="none" class="animate-pulse" />
+                        <path d="M 20,-8 A 28 28 0 0 1 20,20" stroke="#00f2fe" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 3" fill="none" />
+                        <path d="M 30,-14 A 42 42 0 0 1 30,26" stroke="#00f2fe" stroke-width="1" stroke-linecap="round" fill="none" opacity="0.6" />
+                      </g>
+                    </g>
+                  </g>
+                </g>
+
+                <!-- Flexion ray line -->
+                <line id="svg-flexion-ray" x1="205" y1="215" x2="232" y2="28" stroke="#38bdf8" stroke-width="2" stroke-dasharray="4 2" />
+              </svg>
+            </div>
+
+            <!-- Bottom Readout -->
+            <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; font-size: 11px; font-family: var(--font-mono); padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.08); position: relative; z-index: 10;">
+              <span style="color: #94a3b8;">CERVICAL FLEXION:</span>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span class="cervical-angle-text" style="font-family: var(--font-hero-cyber); font-size: 14px; font-weight: 700;">8.4°</span>
+                <span style="color: #64748b;">/ 40.0° MAX</span>
+              </div>
+              <span id="flexion-status-badge" class="engraved-stamp engraved-stamp-emerald">ERGONOMIC: OPTIMAL</span>
+            </div>
+          </div>
+
+          <!-- Right: Hazard Card & Real-Time Controls -->
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            
+            <!-- Alert / Warning Container -->
+            <div class="tactile-rack-card" style="padding: 1.25rem;">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span class="led-jewel led-jewel-cyan"></span>
+                  <span style="font-family: var(--font-hero-cyber); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: var(--sonar-cyan);">SAFE POSTURE ZONE</span>
+                </div>
+                <span class="engraved-stamp">THRESHOLD: 25.0°</span>
+              </div>
+
+              <p id="posture-hazard-description" style="font-size: 12px; color: #cbd5e1; font-weight: 300; line-height: 1.6;">
+                Spine alignment is within the healthy ergonomic zone (&lt;16°). Ultrasonic echo sensors continue ambient forward caution scans.
+              </p>
+
+              <!-- Progress Bar -->
+              <div style="margin-top: 1rem;">
+                <div style="display: flex; justify-content: space-between; font-size: 10px; font-family: var(--font-mono); margin-bottom: 4px;">
+                  <span style="color: #94a3b8;">Head Angle Gauge</span>
+                  <span class="cervical-angle-text" style="font-weight: 700;">8.4°</span>
+                </div>
+                <div style="width: 100%; height: 9px; background: #141824; border-radius: 9999px; overflow: hidden; position: relative; border: 1px solid rgba(255,255,255,0.08);">
+                  <div style="position: absolute; top: 0; bottom: 0; width: 2px; background: #ef4444; z-index: 10; left: 62.5%;" title="25° Slouch Threshold"></div>
+                  <div id="posture-gauge-fill-bar" style="height: 100%; width: 21%; border-radius: 9999px; transition: width 0.1s, background 0.2s;"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 9px; font-family: var(--font-mono); color: #64748b; margin-top: 4px;">
+                  <span>0° Neutral</span>
+                  <span style="color: #ef4444; font-weight: 600;">25° LIMIT</span>
+                  <span>40° Extreme</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Two Hardware Stat Metric Cards -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div class="tactile-rack-card" style="padding: 12px;">
+                <span style="font-size: 10px; font-family: var(--font-mono); color: #94a3b8; display: block;">SPINAL LOAD</span>
+                <div style="margin: 4px 0;">
+                  <span id="spinal-load-lbs" style="font-size: 22px; font-weight: 700; color: #ffffff; font-family: var(--font-mono);">~14 lbs</span>
+                </div>
+                <span style="font-size: 9px; font-family: var(--font-mono); color: #64748b;">Gravitational force on C1-C7</span>
+              </div>
+
+              <div class="tactile-rack-card" style="padding: 12px;">
+                <span style="font-size: 10px; font-family: var(--font-mono); color: #94a3b8; display: block;">ERM HAPTIC PULSE</span>
+                <div style="margin: 4px 0; display: flex; align-items: center; gap: 6px;">
+                  <span id="erm-haptic-status" style="font-size: 13px; font-weight: 700; font-family: var(--font-mono); color: #94a3b8;">STANDBY</span>
+                </div>
+                <span style="font-size: 9px; font-family: var(--font-mono); color: #64748b;">Silent side-temple motor</span>
+              </div>
+            </div>
+
+            <!-- Manual Flexion Range Slider & Quick Presets -->
+            <div class="tactile-rack-card" style="padding: 1rem;">
+              <div style="display: flex; align-items: center; justify-content: space-between; font-size: 11px; font-family: var(--font-mono); margin-bottom: 8px;">
+                <span style="color: #cbd5e1;">Drag to Flex Neck:</span>
+                <span class="cervical-angle-text" style="font-weight: 700;">8.4°</span>
+              </div>
+              <input type="range" id="neck-flexion-slider" min="0" max="40" step="0.5" value="8.4" class="knurled-slider" />
+              
+              <div style="display: flex; justify-content: space-between; gap: 6px; margin-top: 10px;">
+                <button class="preset-chip-btn flexion-preset-btn" data-pitch="5">Upright (5°)</button>
+                <button class="preset-chip-btn flexion-preset-btn" data-pitch="18" style="color: var(--caution-amber);">Tilt (18°)</button>
+                <button class="preset-chip-btn flexion-preset-btn" data-pitch="32" style="color: var(--hazard-red); font-weight: 700;">Slouch Alert (32°)</button>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       SECTION 4: TELEMETRY LAB & SENSOR BUS
+       ========================================================================= -->
+  <section id="telemetry" style="width: 100%; position: relative; padding: 6rem 1.5rem; background: #080a0f; border-top: 1px solid rgba(0,242,254,0.25);">
+    <div class="section-container">
+      
+      <!-- Section Title & Status Header -->
+      <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 2.5rem;">
+        <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 1rem;">
+          <div>
+            <div style="font-size: 11px; text-transform: uppercase; font-family: var(--font-mono); letter-spacing: 0.12em; color: var(--sonar-cyan); font-weight: 600; margin-bottom: 6px; display: flex; align-items: center; gap: 8px;">
+              <span class="led-jewel led-jewel-cyan animate-ping"></span>
+              <span>// Hardware Telemetry & Diagnostics Lab</span>
+            </div>
+            <h3 style="font-family: var(--font-hero-syne); font-weight: 800; font-size: clamp(2rem, 4.5vw, 3.8rem); line-height: 1.05; letter-spacing: -0.02em; color: #ffffff;">
+              Real-Time Sensor Bus & Waveforms
+            </h3>
+          </div>
+
+          <!-- Data Source Pill -->
+          <div style="display: flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 11px;">
+            <span style="color: #94a3b8;">DATA SOURCE:</span>
+            <span class="engraved-stamp engraved-stamp-cyan" style="padding: 4px 12px; font-size: 11px;">
+              <span class="led-jewel led-jewel-cyan animate-pulse"></span>
+              GPIO D7 (ECHO) // D8 (TRIG)
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Telemetry Grid -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.75rem;">
+        
+        <!-- Left 2 Cols: 40kHz Ultrasound Oscilloscope Display -->
+        <div class="tactile-rack-card" style="grid-column: span 1; padding: 1.75rem; display: flex; flex-direction: column; justify-content: space-between;">
+          
+          <!-- Top bar -->
+          <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 1rem; margin-bottom: 1rem; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span class="led-jewel led-jewel-cyan"></span>
+              <span style="font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #ffffff; font-weight: 600;">HC-SR04 Acoustic Waveform Simulator (40kHz)</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 14px; font-size: 12px; font-family: var(--font-mono);">
+              <span style="color: #94a3b8;">Ping: 10μs Trigger</span>
+              <span id="distance-readout-cm" style="font-weight: 700; color: var(--pulse-emerald);">142 cm Distance</span>
+            </div>
+          </div>
+
+          <!-- Slider Bar for Distance -->
+          <div style="margin-bottom: 1rem; background: #0c0f17; padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;">
+            <div style="display: flex; align-items: center; gap: 8px; font-size: 11px; font-family: var(--font-mono); color: #cbd5e1;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--sonar-cyan);"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              <span>Simulate Obstacle Distance:</span>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 10px; width: 100%; max-width: 280px;">
+              <span style="font-size: 10px; font-family: var(--font-mono); color: #64748b;">2cm</span>
+              <input type="range" id="distance-range-slider" min="10" max="380" value="142" class="knurled-slider" />
+              <span style="font-size: 10px; font-family: var(--font-mono); color: #64748b;">400cm</span>
+            </div>
+
+            <div style="display: flex; gap: 6px;">
+              <button class="preset-chip-btn dist-preset-btn" data-val="45">Near (45cm)</button>
+              <button class="preset-chip-btn dist-preset-btn active-cyan" data-val="142">Mid (142cm)</button>
+              <button class="preset-chip-btn dist-preset-btn" data-val="310">Far (310cm)</button>
+            </div>
+          </div>
+
+          <!-- CRT Cathode Oscilloscope Screen -->
+          <div class="crt-oscilloscope-bay" style="height: 230px; padding: 1rem; display: flex; flex-direction: column; justify-content: space-between;">
+            <div class="crt-graticule-grid"></div>
+            <div id="oscilloscope-beam-line" style="position: absolute; top: 0; bottom: 0; width: 2px; background: rgba(0,242,254,0.4); filter: blur(1px); pointer-events: none; left: 50%;"></div>
+
+            <!-- Waveform SVG -->
+            <svg style="width: 100%; height: 100%; position: relative; z-index: 10;" preserveAspectRatio="none" viewBox="0 0 600 160">
+              <line x1="0" y1="40" x2="600" y2="40" stroke="#1e293b" stroke-dasharray="4" stroke-width="1" />
+              <line x1="0" y1="80" x2="600" y2="80" stroke="#1e293b" stroke-width="1" />
+              <line x1="0" y1="120" x2="600" y2="120" stroke="#1e293b" stroke-dasharray="4" stroke-width="1" />
+              
+              <!-- Real-time Echo Waveform Path -->
+              <path id="oscilloscope-waveform-path" d="" fill="none" stroke="#00f2fe" stroke-width="2.5" />
+              <!-- Highlight Box for Echo return -->
+              <rect id="oscilloscope-bounce-rect" x="300" y="20" width="70" height="120" fill="rgba(0, 242, 254, 0.08)" stroke="#0ea5e9" stroke-dasharray="3" stroke-width="1" />
+            </svg>
+
+            <!-- Bottom Readout on CRT Screen -->
+            <div style="position: relative; z-index: 10; display: flex; justify-content: space-between; font-size: 10px; font-family: var(--font-mono); color: #94a3b8;">
+              <span>0.0ms [TX BURST]</span>
+              <span id="waveform-bounce-status" style="font-weight: 700; color: var(--sonar-cyan);">ACOUSTIC BOUNCE CAPTURED</span>
+              <span id="time-of-flight-readout">+8.3ms [RX ECHO RETURN]</span>
+            </div>
+          </div>
+
+          <!-- Bottom 3 Velocity / Spec metrics -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.08); font-family: var(--font-mono); font-size: 11px;">
+            <div>
+              <span style="color: #94a3b8; display: block;">Sonic Velocity:</span>
+              <span style="color: #ffffff; font-weight: 600;">343.2 m/s (20°C)</span>
+            </div>
+            <div>
+              <span style="color: #94a3b8; display: block;">Sampling Frequency:</span>
+              <span style="color: var(--sonar-cyan); font-weight: 600;">50 Hz Continuous</span>
+            </div>
+            <div>
+              <span style="color: #94a3b8; display: block;">Haptic Trigger Threshold:</span>
+              <span id="haptic-trigger-status" style="color: #e2e8f0;">&lt; 80 cm Hazard (STANDBY)</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right 1 Col: Cervical Spine Dial Gauge Panel -->
+        <div class="tactile-rack-card" style="padding: 1.75rem; display: flex; flex-direction: column; justify-content: space-between;">
+          
+          <!-- Top bar -->
+          <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 1rem;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="led-jewel led-jewel-amber"></span>
+              <span style="font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #ffffff; font-weight: 600;">Cervical Spine Angle</span>
+            </div>
+            <span id="telemetry-dial-status-pill" class="engraved-stamp engraved-stamp-emerald">OPTIMAL</span>
+          </div>
+
+          <!-- Tilt slider inside dial panel -->
+          <div style="margin-top: 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px; background: #0c0f17; padding: 8px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.06);">
+            <span style="font-size: 10px; font-family: var(--font-mono); color: #94a3b8;">Tilt:</span>
+            <input type="range" id="spine-angle-slider" min="0" max="40" step="0.2" value="8.4" class="knurled-slider" style="max-width: 120px;" />
+            <div style="display: flex; gap: 4px;">
+              <button class="preset-chip-btn spine-preset-btn" data-pitch="8.4" style="padding: 2px 6px; font-size: 9px;">8.4°</button>
+              <button class="preset-chip-btn spine-preset-btn" data-pitch="28" style="padding: 2px 6px; font-size: 9px; color: var(--caution-amber);">28°</button>
+            </div>
+          </div>
+
+          <!-- Circular Instrument Dial Gauge -->
+          <div style="margin: 1.5rem auto; position: relative; width: 180px; height: 180px; display: flex; align-items: center; justify-content: center;">
+            <svg style="width: 100%; height: 100%;" viewBox="0 0 100 100">
+              <!-- Background Ring -->
+              <circle cx="50" cy="50" r="42" fill="none" stroke="#1e293b" stroke-width="7" stroke-linecap="round" stroke-dasharray="190 264" stroke-dashoffset="-37" />
+              <!-- Progress Ring -->
+              <circle id="gauge-progress-circle" cx="50" cy="50" r="42" fill="none" stroke="#f59e0b" stroke-width="7" stroke-linecap="round" stroke-dasharray="37 264" stroke-dashoffset="-37" style="transition: stroke-dasharray 0.1s, stroke 0.2s;" />
+            </svg>
+
+            <!-- Center Degree Value -->
+            <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+              <div id="gauge-dial-value" style="font-family: var(--font-hero-syne); font-size: 36px; font-weight: 800; color: #ffffff; line-height: 1;">8.4°</div>
+              <div style="font-size: 10px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; margin-top: 4px;">Head Flexion</div>
+            </div>
+          </div>
+
+          <!-- Specs list in dial card -->
+          <div style="display: flex; flex-direction: column; gap: 8px; font-family: var(--font-mono); font-size: 11px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 1rem;">
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: #94a3b8;">Tech-Neck Hazard Limit:</span>
+              <span style="color: #ef4444; font-weight: 600;">&gt; 25.0° Slouch</span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: #94a3b8;">IMU Gyro Drift Comp:</span>
+              <span style="color: var(--pulse-emerald); font-weight: 600;">Kalman Filter Active</span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: #94a3b8;">Vibration Haptic:</span>
+              <span id="dial-haptic-status-text" style="color: var(--sonar-cyan); font-weight: 600;">Silent ERM Motor Ready</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Hardware Pinout Architecture & Board Interconnects -->
+      <div class="tactile-rack-card" style="margin-top: 2rem; padding: 1.75rem;">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--mcu-indigo);"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+          <span style="font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--mcu-indigo); font-weight: 700;">Hardware Pinout Architecture & Board Interconnects</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; font-family: var(--font-mono); font-size: 11px;">
+          <!-- Pin D8 -->
+          <div style="background: #0d1017; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 12px;">
+            <span style="font-size: 10px; color: #94a3b8; display: block;">PIN D8</span>
+            <span style="color: var(--sonar-cyan); font-weight: 700; font-size: 13px;">TRIG_PULSE</span>
+            <span style="font-size: 10px; color: #64748b; display: block; margin-top: 4px;">10μs TTL Square</span>
+          </div>
+
+          <!-- Pin D7 -->
+          <div style="background: #0d1017; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 12px;">
+            <span style="font-size: 10px; color: #94a3b8; display: block;">PIN D7</span>
+            <span style="color: var(--sonar-cyan); font-weight: 700; font-size: 13px;">ECHO_IN</span>
+            <span style="font-size: 10px; color: #64748b; display: block; margin-top: 4px;">Interrupt Service</span>
+          </div>
+
+          <!-- Pin A4 / A5 -->
+          <div style="background: #0d1017; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 12px;">
+            <span style="font-size: 10px; color: #94a3b8; display: block;">PIN A4 / A5</span>
+            <span style="color: var(--caution-amber); font-weight: 700; font-size: 13px;">I2C BUS (SDA/SCL)</span>
+            <span style="font-size: 10px; color: #64748b; display: block; margin-top: 4px;">400 kHz Fast-Mode</span>
+          </div>
+
+          <!-- Pin D3 -->
+          <div style="background: #0d1017; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 12px;">
+            <span style="font-size: 10px; color: #94a3b8; display: block;">PIN D3 (PWM)</span>
+            <span style="color: var(--pulse-emerald); font-weight: 700; font-size: 13px;">HAPTIC_DRV</span>
+            <span style="font-size: 10px; color: #64748b; display: block; margin-top: 4px;">Silent ERM Motor</span>
+          </div>
+
+          <!-- MCU Core -->
+          <div style="background: #0d1017; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 12px;">
+            <span style="font-size: 10px; color: #94a3b8; display: block;">MCU CORE</span>
+            <span style="color: var(--mcu-indigo); font-weight: 700; font-size: 13px;">ATmega328P</span>
+            <span style="font-size: 10px; color: #64748b; display: block; margin-top: 4px;">16MHz / 32KB Flash</span>
+          </div>
+
+          <!-- Power Rail -->
+          <div style="background: #0d1017; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 12px;">
+            <span style="font-size: 10px; color: #94a3b8; display: block;">POWER RAIL</span>
+            <span style="color: #c084fc; font-weight: 700; font-size: 13px;">3.7V LIPO CELL</span>
+            <span style="font-size: 10px; color: #64748b; display: block; margin-top: 4px;">TPS61040 Boost</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       FOOTER / SPECS
+       ========================================================================= -->
+  <footer id="specs" style="width: 100%; border-top: 1px solid rgba(255,255,255,0.08); padding: 2.5rem 1.5rem; background: #06070b; font-size: 12px; color: #94a3b8; position: relative; z-index: 10;">
+    <div class="section-container" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span style="font-family: var(--font-hero-cyber); font-weight: 700; font-size: 13px; letter-spacing: 0.08em; color: #ffffff; text-transform: uppercase;">Ultrasonic Glasses</span>
+        <span style="color: #475569;">—</span>
+        <span style="color: #cbd5e1; font-weight: 300;">Posture Correction and Caution Detection Platform</span>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; font-family: var(--font-mono);">
+        <a href="#hero" style="color: #94a3b8; text-decoration: none; transition: color 0.15s;">Back to Top ↑</a>
+        <a href="#capabilities" style="color: #94a3b8; text-decoration: none; transition: color 0.15s;">Acoustic Specs</a>
+        <a href="#telemetry" style="color: #94a3b8; text-decoration: none; transition: color 0.15s;">IMU Diagnostics</a>
+        <button class="open-schematics-btn" style="background: none; border: none; color: var(--sonar-cyan); font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; font-family: var(--font-mono); font-size: 12px;">
+          <span>Request Hardware Schematics</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =========================================================================
+       ENGINEERING SCHEMATICS & WIRING ARCHITECTURE MODAL
+       ========================================================================= -->
+  <div id="schematics-modal" class="modal-backdrop-blur" style="display: none;">
+    <div class="modal-chassis">
+      
+      <!-- Modal Header -->
+      <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: space-between; background: #0c0f16;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(0,242,254,0.15); border: 1px solid rgba(0,242,254,0.4); display: flex; align-items: center; justify-content: center; color: var(--sonar-cyan);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div>
+            <h4 style="font-family: var(--font-hero-grotesk); font-weight: 700; color: #ffffff; font-size: 15px;">Engineering Schematics & Wiring Architecture</h4>
+            <p style="font-size: 11px; font-family: var(--font-mono); color: #94a3b8;">Ultrasonic Glasses REV 2.4 // Micro-Wearable Pinout</p>
+          </div>
+        </div>
+
+        <button id="close-schematics-btn" style="width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #94a3b8; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px;">✕</button>
+      </div>
+
+      <!-- Tab Switcher -->
+      <div style="padding: 0.5rem 1.5rem 0 1.5rem; display: flex; gap: 8px; border-bottom: 1px solid rgba(255,255,255,0.1); background: #080a0f;">
+        <button class="modal-tab-btn active-cyan" data-tab="wiring" style="padding: 8px 16px; font-size: 11px; font-family: var(--font-mono); tracking-wider; background: none; border: none; border-bottom: 2px solid var(--sonar-cyan); color: var(--sonar-cyan); font-weight: 700; cursor: pointer;">CIRCUIT INTERCONNECTS</button>
+        <button class="modal-tab-btn" data-tab="bom" style="padding: 8px 16px; font-size: 11px; font-family: var(--font-mono); tracking-wider; background: none; border: none; border-bottom: 2px solid transparent; color: #94a3b8; cursor: pointer;">BILL OF MATERIALS (BOM)</button>
+        <button class="modal-tab-btn" data-tab="firmware" style="padding: 8px 16px; font-size: 11px; font-family: var(--font-mono); tracking-wider; background: none; border: none; border-bottom: 2px solid transparent; color: #94a3b8; cursor: pointer;">FIRMWARE SKETCH (C++)</button>
+      </div>
+
+      <!-- Tab Body -->
+      <div style="padding: 1.5rem; overflow-y: auto; flex: 1; font-family: var(--font-mono); font-size: 12px;">
+        
+        <!-- Tab 1: Circuit Interconnects -->
+        <div id="modal-tab-wiring" style="display: block;">
+          <div style="background: #090c13; border: 1px solid rgba(0,242,254,0.2); border-radius: 12px; padding: 1.25rem;">
+            <div style="color: var(--sonar-cyan); font-weight: 700; font-size: 13px; margin-bottom: 1rem;">INTERCONNECT PIN MATRIX (ARDUINO NANO ATMEGA328P)</div>
+            <div style="overflow-x: auto;">
+              <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                  <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); color: #94a3b8; font-size: 11px;">
+                    <th style="padding: 8px 12px;">MCU Pin</th>
+                    <th style="padding: 8px 12px;">Component Pin</th>
+                    <th style="padding: 8px 12px;">Target Module</th>
+                    <th style="padding: 8px 12px;">Signal Type</th>
+                    <th style="padding: 8px 12px;">Wiring Note</th>
+                  </tr>
+                </thead>
+                <tbody style="color: #cbd5e1; font-size: 12px;">
+                  <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                    <td style="padding: 8px 12px; color: var(--sonar-cyan); font-weight: 600;">D8</td>
+                    <td style="padding: 8px 12px; color: #38bdf8;">TRIG</td>
+                    <td style="padding: 8px 12px;">HC-SR04 Transceiver</td>
+                    <td style="padding: 8px 12px; color: var(--pulse-emerald);">10μs TTL Pulse</td>
+                    <td style="padding: 8px 12px; color: #94a3b8;">Front bridge routing</td>
+                  </tr>
+                  <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                    <td style="padding: 8px 12px; color: var(--sonar-cyan); font-weight: 600;">D7</td>
+                    <td style="padding: 8px 12px; color: #38bdf8;">ECHO</td>
+                    <td style="padding: 8px 12px;">HC-SR04 Transceiver</td>
+                    <td style="padding: 8px 12px; color: var(--pulse-emerald);">Interrupt Return</td>
+                    <td style="padding: 8px 12px; color: #94a3b8;">Time-of-flight flight bus</td>
+                  </tr>
+                  <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                    <td style="padding: 8px 12px; color: var(--caution-amber); font-weight: 600;">A4</td>
+                    <td style="padding: 8px 12px; color: #fde68a;">SDA</td>
+                    <td style="padding: 8px 12px;">MPU6050 Cervical IMU</td>
+                    <td style="padding: 8px 12px; color: var(--caution-amber);">I2C Data (400kHz)</td>
+                    <td style="padding: 8px 12px; color: #94a3b8;">4.7kΩ pullup to 3.3V</td>
+                  </tr>
+                  <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                    <td style="padding: 8px 12px; color: var(--caution-amber); font-weight: 600;">A5</td>
+                    <td style="padding: 8px 12px; color: #fde68a;">SCL</td>
+                    <td style="padding: 8px 12px;">MPU6050 Cervical IMU</td>
+                    <td style="padding: 8px 12px; color: var(--caution-amber);">I2C Clock</td>
+                    <td style="padding: 8px 12px; color: #94a3b8;">4.7kΩ pullup to 3.3V</td>
+                  </tr>
+                  <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                    <td style="padding: 8px 12px; color: var(--pulse-emerald); font-weight: 600;">D3 (PWM)</td>
+                    <td style="padding: 8px 12px; color: #a7f3d0;">BASE</td>
+                    <td style="padding: 8px 12px;">2N2222 Driver / ERM</td>
+                    <td style="padding: 8px 12px; color: #c084fc;">PWM Intensity</td>
+                    <td style="padding: 8px 12px; color: #94a3b8;">Flyback 1N4148 diode across motor</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 8px 12px; color: var(--mcu-indigo); font-weight: 600;">5V / VIN</td>
+                    <td style="padding: 8px 12px; color: #c7d2fe;">VOUT</td>
+                    <td style="padding: 8px 12px;">TPS61040 Boost Module</td>
+                    <td style="padding: 8px 12px; color: #ef4444;">5.0V Boost Rail</td>
+                    <td style="padding: 8px 12px; color: #94a3b8;">From 3.7V 350mAh LiPo Cell</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div style="margin-top: 1rem; padding: 1rem; border-radius: 12px; background: rgba(0,242,254,0.08); border: 1px solid rgba(0,242,254,0.3); display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--sonar-cyan);"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span style="color: #cbd5e1; font-size: 11px;">Complete Gerber files & KiCad Schematics package available for prototype fabrication.</span>
+            </div>
+            <button id="download-ino-btn" class="tactile-button tactile-button-primary" style="padding: 6px 14px; font-size: 10px;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>Download .INO</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Tab 2: Bill of Materials -->
+        <div id="modal-tab-bom" style="display: none;">
+          <div style="background: #090c13; border: 1px solid rgba(0,242,254,0.2); border-radius: 12px; padding: 1.25rem;">
+            <div style="color: var(--sonar-cyan); font-weight: 700; font-size: 13px; margin-bottom: 1rem;">HARDWARE BILL OF MATERIALS</div>
+            <div style="display: flex; flex-direction: column; gap: 8px; color: #cbd5e1;">
+              <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">
+                <span>1. Arduino Nano ATmega328P 16MHz Mini Board</span>
+                <span style="color: var(--sonar-cyan);">1x ($4.20)</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">
+                <span>2. HC-SR04 Dual 40kHz Ultrasonic Sonar Transducer</span>
+                <span style="color: var(--sonar-cyan);">1x ($1.80)</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">
+                <span>3. MPU-6050 6-DOF Gyroscope / Accelerometer Module</span>
+                <span style="color: var(--sonar-cyan);">1x ($1.60)</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">
+                <span>4. ERM Miniature Coin Vibration Motor 10mm x 2.7mm</span>
+                <span style="color: var(--sonar-cyan);">1x ($0.80)</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">
+                <span>5. 3.7V 350mAh LiPo Rechargeable Battery Cell</span>
+                <span style="color: var(--sonar-cyan);">1x ($3.50)</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">
+                <span>6. TPS61040 3.7V to 5V Step-Up Boost Regulator</span>
+                <span style="color: var(--sonar-cyan);">1x ($1.20)</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">
+                <span>7. 3D-Printed / Nylon Glasses Lightweight Mounting Clips</span>
+                <span style="color: var(--sonar-cyan);">1x ($1.50)</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding-top: 10px; font-weight: 700; color: var(--pulse-emerald); font-size: 13px;">
+                <span>Total Estimated Prototype BOM Cost:</span>
+                <span>~$14.60 USD</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Firmware Sketch -->
+        <div id="modal-tab-firmware" style="display: none; position: relative;">
+          <div style="position: absolute; top: 12px; right: 12px; z-index: 10;">
+            <button id="copy-firmware-btn" class="tactile-button" style="padding: 6px 14px; font-size: 10px;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              <span id="copy-btn-text">COPY CODE</span>
+            </button>
+          </div>
+
+          <pre id="firmware-code-block" style="background: #080a0f; border: 1px solid rgba(0,242,254,0.25); border-radius: 12px; padding: 1.25rem; color: #cbd5e1; font-size: 11px; line-height: 1.6; overflow-x: auto;">// =========================================================================
+// Ultrasonic Glasses with Posture Correction & Caution Detection
+// Target MCU: Arduino Nano (ATmega328P @ 16MHz)
+// Sensors: HC-SR04 Ultrasound + MPU6050 6-DOF IMU
+// Actuator: ERM Silent Coin Vibration Motor (PWM via 2N2222 transistor)
+// =========================================================================
+
+#include &lt;Wire.h&gt;
+
+const int PIN_TRIG   = 8;   // 10us ultrasound trigger output
+const int PIN_ECHO   = 7;   // Acoustic echo input interrupt
+const int PIN_HAPTIC = 3;   // PWM gate to ERM motor driver
+
+const float HAZARD_THRESHOLD_CM = 80.0;
+const float POSTURE_SLOUCH_DEG  = 25.0;
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(PIN_TRIG, OUTPUT);
+  pinMode(PIN_ECHO, INPUT);
+  pinMode(PIN_HAPTIC, OUTPUT);
+  digitalWrite(PIN_TRIG, LOW);
+
+  Wire.begin();
+  // Initialize MPU6050 over fast I2C bus
+  Wire.beginTransmission(0x68);
+  Wire.write(0x6B); // PWR_MGMT_1
+  Wire.write(0x00); // Wake up device
+  Wire.endTransmission(true);
+
+  Serial.println(F("[SYSTEM] Ultrasonic Glasses Core Initialized."));
+}
+
+float measureDistanceCm() {
+  digitalWrite(PIN_TRIG, LOW);
+  delayMicroseconds(2);
+  digitalWrite(PIN_TRIG, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(PIN_TRIG, LOW);
+
+  unsigned long duration = pulseIn(PIN_ECHO, HIGH, 30000); // 30ms timeout (~500cm)
+  if (duration == 0) return 400.0;
+  return (duration * 0.03432) / 2.0;
+}
+
+float measurePitchAngle() {
+  Wire.beginTransmission(0x68);
+  Wire.write(0x3B); // ACCEL_XOUT_H
+  Wire.endTransmission(false);
+  Wire.requestFrom(0x68, 6, true);
+
+  int16_t ax = (Wire.read() &lt;&lt; 8) | Wire.read();
+  int16_t ay = (Wire.read() &lt;&lt; 8) | Wire.read();
+  int16_t az = (Wire.read() &lt;&lt; 8) | Wire.read();
+
+  // Pitch angle calculation from gravity vector
+  float pitch = atan2((float)ay, sqrt((float)ax * ax + (float)az * az)) * 180.0 / PI;
+  return abs(pitch);
+}
+
+void loop() {
+  float dist = measureDistanceCm();
+  float pitch = measurePitchAngle();
+
+  bool obstacleHazard = (dist &lt; HAZARD_THRESHOLD_CM);
+  bool postureHazard  = (pitch &gt; POSTURE_SLOUCH_DEG);
+
+  if (obstacleHazard || postureHazard) {
+    // Gentle pulse vibration warning
+    analogWrite(PIN_HAPTIC, obstacleHazard ? 220 : 140);
+    delay(80);
+    analogWrite(PIN_HAPTIC, 0);
+  }
+
+  delay(30); // 30Hz evaluation loop
+}</pre>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div style="padding: 1rem 1.5rem; border-top: 1px solid rgba(255,255,255,0.1); background: #080a0f; display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: #94a3b8; font-family: var(--font-mono);">
+        <span>Open Hardware Initiative // ATmega328P Architecture</span>
+        <button onclick="document.getElementById('schematics-modal').style.display = 'none'" class="tactile-button" style="padding: 6px 14px; font-size: 11px;">Close Inspector</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Media Queries for Adaptive Layout -->
+  <style>
+    @media (min-width: 768px) {
+      .desktop-nav { display: flex !important; }
+      .status-indicator-pill { display: flex !important; }
+      .hud-azimuth-left { display: flex !important; }
+      .hud-azimuth-right { display: flex !important; }
+      #callout-sonar { display: block !important; }
+      #callout-imu { display: block !important; }
+      #callout-mcu { display: block !important; }
+    }
+  </style>
+
+  <!-- Application Logic -->
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
